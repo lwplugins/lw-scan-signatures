@@ -7,7 +7,7 @@ sql_like: null
 tier: suspicious
 category: redirect
 name: header(Location) built from request input
-description: header('Location: ...') concatenated with $_GET/$_POST/$_REQUEST/$_COOKIE data without validation — an open-redirect primitive often abused for phishing.
+description: "header('Location: ...') concatenated with $_GET/$_POST/$_REQUEST/$_COOKIE data without validation — an open-redirect primitive often abused for phishing."
 common_strings: []
 tests:
   match:

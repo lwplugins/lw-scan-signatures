@@ -17,5 +17,22 @@ jobs:
           php-version: '8.2'
           coverage: none
 
+      # Strict YAML gate: the real consumer is Go yaml.v3 (libyaml-class strictness),
+      # which is stricter than the hand-rolled PHP parser. PyYAML catches the same
+      # class of error (e.g. an unquoted scalar containing ": ").
+      - name: Strict YAML lint (libyaml-class)
+        run: |
+          python3 - <<'EOF'
+          import glob, sys, yaml
+          bad = 0
+          for f in sorted(glob.glob("signatures/**/*.yaml", recursive=True)):
+              try:
+                  yaml.safe_load(open(f))
+              except Exception as e:
+                  print(f"::error file={f}::{str(e).splitlines()[0]}")
+                  bad += 1
+          sys.exit(1 if bad else 0)
+          EOF
+
       - name: Validate every signatures/**/*.yaml
         run: php .github/validate.php
