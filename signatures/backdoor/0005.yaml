@@ -1,0 +1,19 @@
+id: lw:0005
+kind: regex
+target: file_php
+pattern: '(exec|system|passthru|shell_exec|popen|proc_open)\s*\(\s*\$_(GET|POST|REQUEST|COOKIE)'
+flags: i
+sql_like: null
+tier: infected
+category: backdoor
+name: Shell execution function fed with request input
+description: One of exec/system/passthru/shell_exec/popen/proc_open called directly with $_GET/$_POST/$_REQUEST/$_COOKIE data — an OS command injection backdoor.
+common_strings: []
+tests:
+  match:
+    - "system($_GET['cmd']);"
+    - "shell_exec($_POST['c']);"
+    - "passthru($_REQUEST['x']);"
+  no_match:
+    - "system('ls -la');"
+    - "exec($safeCommand, $output);"

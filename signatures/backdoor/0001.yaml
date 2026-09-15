@@ -1,0 +1,19 @@
+id: lw:0001
+kind: regex
+target: file_php
+pattern: 'eval\s*\([^;]{0,80}\$_(GET|POST|REQUEST|COOKIE)'
+flags: i
+sql_like: null
+tier: suspicious
+category: backdoor
+name: eval() on request input
+description: A direct eval() call whose argument is built from $_GET/$_POST/$_REQUEST/$_COOKIE data — a classic PHP backdoor pattern. Flagged as suspicious rather than infected because eval() also appears in legitimate template/DSL engines.
+common_strings: []
+tests:
+  match:
+    - "eval($_POST['c']);"
+    - "eval($_GET['cmd']);"
+    - "eval( $_REQUEST[ 'x' ] );"
+  no_match:
+    - "eval($compiledTemplate);"
+    - "eval($twig->render($template));"

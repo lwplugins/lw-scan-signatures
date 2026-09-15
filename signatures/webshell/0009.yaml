@@ -1,0 +1,19 @@
+id: lw:0009
+kind: regex
+target: file_php
+pattern: 'FilesMan|c99shell|r57shell'
+flags: i
+sql_like: null
+tier: infected
+category: webshell
+name: Known webshell banner string
+description: A hard-coded banner/title string from a well-known public PHP webshell family (WSO's "FilesMan" file-manager tab, c99shell, r57shell).
+common_strings: []
+tests:
+  match:
+    - "<title>FilesMan</title>"
+    - "// c99shell v.1.0 by ****** (c) 2004"
+    - "$shellname = 'r57shell';"
+  no_match:
+    - "class FileManager { public function list() {} }"
+    - "$title = 'File Manager';"

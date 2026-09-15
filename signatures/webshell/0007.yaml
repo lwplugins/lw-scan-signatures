@@ -1,0 +1,18 @@
+id: lw:0007
+kind: regex
+target: file_php
+pattern: '\$auth_pass\s*=\s*["''][a-f0-9]{32}["'']'
+flags: i
+sql_like: null
+tier: infected
+category: webshell
+name: $auth_pass webshell password constant
+description: The $auth_pass = '<md5-hash>' assignment used by WSO/b374k-family PHP webshells to gate their login screen behind a hard-coded MD5 password hash.
+common_strings: []
+tests:
+  match:
+    - "$auth_pass = \"81dc9bdb52d04dc20036dbd8313ed055\";"
+    - "$auth_pass='202cb962ac59075b964b07152d234b70';"
+  no_match:
+    - "$auth_level = 'admin';"
+    - "$auth_pass = 'not-a-hash';"

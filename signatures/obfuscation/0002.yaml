@@ -1,0 +1,18 @@
+id: lw:0002
+kind: regex
+target: file_php
+pattern: '(eval|assert)\s*\(\s*base64_decode\s*\('
+flags: i
+sql_like: null
+tier: infected
+category: obfuscation
+name: base64_decode() piped into eval()/assert()
+description: A base64-encoded payload decoded and immediately executed via eval() or assert() — the single most common PHP dropper one-liner.
+common_strings: []
+tests:
+  match:
+    - "eval(base64_decode('cGhwaW5mbygpOw=='));"
+    - "assert(base64_decode($_POST['z']));"
+  no_match:
+    - "eval($decoded);"
+    - "$data = base64_decode($str);"

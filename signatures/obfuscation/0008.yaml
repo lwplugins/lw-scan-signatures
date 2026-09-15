@@ -1,0 +1,19 @@
+id: lw:0008
+kind: regex
+target: file_php
+pattern: '(gzinflate|gzuncompress)\s*\(\s*base64_decode\s*\(|str_rot13\s*\(\s*base64_decode\s*\('
+flags: i
+sql_like: null
+tier: infected
+category: obfuscation
+name: gzinflate/gzuncompress/str_rot13 wrapping base64_decode
+description: A compressed-and-encoded payload (gzinflate/gzuncompress or str_rot13 layered over base64_decode) — the standard packing pattern used to hide dropper payloads from signature scanners.
+common_strings: []
+tests:
+  match:
+    - "eval(gzinflate(base64_decode('c3RyMQ==')));"
+    - "$x = str_rot13(base64_decode($s));"
+    - "gzuncompress(base64_decode($payload));"
+  no_match:
+    - "$data = base64_decode($x);"
+    - "$out = gzinflate($rawDeflateData);"

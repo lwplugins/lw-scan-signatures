@@ -1,0 +1,18 @@
+id: lw:0013
+kind: regex
+target: file_php
+pattern: '(?<![a-zA-Z0-9_])mail\s*\(\s*\$_(GET|POST|REQUEST|COOKIE)'
+flags: i
+sql_like: null
+tier: suspicious
+category: mailer
+name: mail() recipient/body taken from request input
+description: PHP's mail() called with $_GET/$_POST/$_REQUEST/$_COOKIE as the first argument (recipient), a common pattern in anonymous PHP spam-mailer scripts dropped on compromised sites.
+common_strings: []
+tests:
+  match:
+    - "mail($_POST['to'], $subject, $body);"
+    - "mail( $_GET[\"to\"], $subj, $msg );"
+  no_match:
+    - "mail('admin@example.com', $subject, $body);"
+    - "wp_mail($to, $subject, $body);"

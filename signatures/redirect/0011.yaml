@@ -1,0 +1,18 @@
+id: lw:0011
+kind: regex
+target: file_php
+pattern: 'header\s*\(\s*["'']Location:[^"'']*["'']\s*\.\s*\$_(GET|POST|REQUEST|COOKIE)'
+flags: i
+sql_like: null
+tier: suspicious
+category: redirect
+name: header(Location) built from request input
+description: header('Location: ...') concatenated with $_GET/$_POST/$_REQUEST/$_COOKIE data without validation — an open-redirect primitive often abused for phishing.
+common_strings: []
+tests:
+  match:
+    - "header('Location: ' . $_GET['url']);"
+    - "header(\"Location: \" . $_REQUEST['next']);"
+  no_match:
+    - "header('Location: /dashboard');"
+    - "header('Content-Type: text/html');"

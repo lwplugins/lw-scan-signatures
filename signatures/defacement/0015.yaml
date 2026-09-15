@@ -1,0 +1,18 @@
+id: lw:0015
+kind: regex
+target: file_any
+pattern: 'hacked\s+by'
+flags: i
+sql_like: null
+tier: info
+category: defacement
+name: "\"Hacked by\" defacement marker"
+description: A "Hacked By <handle>" style string left behind by a defacer, typically dropped as a standalone page replacing the site's homepage. Informational only — cosmetic marker, not itself a code-execution risk.
+common_strings: []
+tests:
+  match:
+    - "<h1>Hacked By CyberGhost Team</h1>"
+    - "This site was hacked by @some_handle"
+  no_match:
+    - "This function determines if the site was compromised."
+    - "Security patch applied, no unauthorized access detected."

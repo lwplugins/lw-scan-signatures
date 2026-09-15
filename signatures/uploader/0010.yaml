@@ -1,0 +1,18 @@
+id: lw:0010
+kind: regex
+target: file_php
+pattern: 'move_uploaded_file\s*\(\s*\$_FILES'
+flags: i
+sql_like: null
+tier: suspicious
+category: uploader
+name: move_uploaded_file() driven by $_FILES
+description: An upload handler that moves an attacker-supplied $_FILES entry to disk. Flagged suspicious rather than infected because the regex cannot see whether an authentication/capability check precedes it.
+common_strings: []
+tests:
+  match:
+    - "move_uploaded_file($_FILES['file']['tmp_name'], $dest);"
+    - "move_uploaded_file( $_FILES[\"upload\"][\"tmp_name\"], $target );"
+  no_match:
+    - "move_uploaded_file($tmpName, $dest);"
+    - "copy($_FILES['file']['tmp_name'], $dest);"
