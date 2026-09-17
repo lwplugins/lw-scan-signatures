@@ -1,0 +1,18 @@
+id: lw:0017
+kind: regex
+target: file_php
+pattern: 'realpath\s*\(\s*\$_(?:GET|POST|REQUEST|COOKIE)\s*\['
+flags: i
+sql_like: null
+tier: suspicious
+category: webshell
+name: realpath() on request input
+description: A directory-browsing primitive that resolves an attacker-supplied path straight from the request. This is the entry point of the "clean code" file-manager webshell family, which contains no eval, base64 or obfuscation at all. Flagged suspicious rather than infected because a legitimate media or backup plugin can legally resolve a user-supplied path before its own capability check.
+common_strings: []
+tests:
+  match:
+    - "$currentPath = isset($_GET['path']) ? realpath($_GET['path']) : getcwd();"
+    - "$dir = realpath( $_REQUEST[\"dir\"] );"
+  no_match:
+    - "$path = realpath($base . '/' . $rel);"
+    - "$root = realpath(dirname(__FILE__));"

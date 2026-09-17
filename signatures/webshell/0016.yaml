@@ -1,0 +1,18 @@
+id: lw:0016
+kind: regex
+target: file_php
+pattern: 'define\s*\(\s*[''"]ALLOWED_EXTENSIONS[''"]\s*,\s*[''"][^''"]*\b(?:php\d?|phtml|phar)\b[^''"]*[''"]'
+flags: i
+sql_like: null
+tier: infected
+category: webshell
+name: ALLOWED_EXTENSIONS upload whitelist containing php
+description: A file-manager script whose upload whitelist constant explicitly permits PHP. Legitimate uploaders never allow executable PHP through an extension whitelist, so the combination is malicious by construction. Found on a real compromised site in a clean-coded file-manager webshell that carried no obfuscation and was therefore missed by every other signature source, Wordfence CLI included.
+common_strings: []
+tests:
+  match:
+    - "define('ALLOWED_EXTENSIONS', 'jpg,jpeg,png,gif,txt,pdf,zip,php,html,css,js,json,sql');"
+    - "define( \"ALLOWED_EXTENSIONS\", \"gif,phtml\" );"
+  no_match:
+    - "define('ALLOWED_EXTENSIONS', 'jpg,jpeg,png,gif,pdf,zip');"
+    - "$allowedArray = explode(',', ALLOWED_EXTENSIONS);"
